@@ -1,4 +1,4 @@
-****Gas Optimization Comparison Tests****
+****⛽Gas Optimization Comparison Tests⛽****
 
 **1. To run the ERC20 gas comparison test:**
 
