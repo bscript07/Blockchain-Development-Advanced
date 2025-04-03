@@ -26,7 +26,6 @@ jobs:
       - name: Show Forge version
         run: |
           forge --version
-
       - name: Run Forge fmt
         run: |
           forge fmt --check
