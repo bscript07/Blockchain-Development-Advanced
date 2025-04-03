@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import {SimpleSignature} from "@/04_signatures/SimpleSignature.sol";
+import { SimpleSignature } from "@/04_signatures/SimpleSignature.sol";
 
 contract SimpleSignatureTest is Test {
     SimpleSignature simpleSignatureContract;
@@ -20,7 +20,8 @@ contract SimpleSignatureTest is Test {
         bytes memory data = abi.encode("secret value");
         bytes32 hash = keccak256(data);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKeySigner, hash);
-        address recovered = simpleSignatureContract.verifySignature(data, v, r, s);
+        address recovered =
+            simpleSignatureContract.verifySignature(data, v, r, s);
 
         console.log("Recovered", recovered);
 

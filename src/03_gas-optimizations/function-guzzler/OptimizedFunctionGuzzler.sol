@@ -10,25 +10,25 @@ error InsufficientBalance();
 
 contract OptimizedFunctionGuzzler {
     // Concrete mapping usage
-    mapping (address user => uint256) private usersData;
+    mapping(address user => uint256) private usersData;
 
     // Concrete array usage
-    mapping (uint256 => bool) private values;
+    mapping(uint256 => bool) private values;
     uint256 private valuesCount;
     uint256 private sum;
 
     function registerUser() external {
         if (_isRegistered(msg.sender)) revert AlreadyRegistered();
 
-         // Set the Least Significant Bit (LSB) to 1 to indicate registration
-         usersData[msg.sender] |= 1;
+        // Set the Least Significant Bit (LSB) to 1 to indicate registration
+        usersData[msg.sender] |= 1;
     }
 
     function deposit(uint256 _amount) external {
         if (!_isRegistered(msg.sender)) revert NotRegistered();
 
-         // Shift amount left by 1 and add to userData while preserving isRegistered bit
-         usersData[msg.sender] += _amount << 1;
+        // Shift amount left by 1 and add to userData while preserving isRegistered bit
+        usersData[msg.sender] += _amount << 1;
     }
 
     function transfer(address _to, uint256 _amount) external {

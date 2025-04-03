@@ -14,9 +14,16 @@ contract StandardERC20 {
     mapping(address => mapping(address => uint256)) public allowance;
 
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Approval(
+        address indexed owner, address indexed spender, uint256 value
+    );
 
-    constructor(string memory _name, string memory _symbol, uint8 _decimals, uint256 _initialSupply) {
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        uint8 _decimals,
+        uint256 _initialSupply
+    ) {
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
@@ -45,7 +52,10 @@ contract StandardERC20 {
         return true;
     }
 
-    function transferFrom(address from, address to, uint256 value) external returns (bool) {
+    function transferFrom(address from, address to, uint256 value)
+        external
+        returns (bool)
+    {
         require(balanceOf[from] >= value, "Insufficient balance");
         require(allowance[from][msg.sender] >= value, "Insufficient allowance");
         require(to != address(0), "Transfer to zero address");

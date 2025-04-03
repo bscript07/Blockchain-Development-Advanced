@@ -1,23 +1,24 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import {Test} from "forge-std/Test.sol";
-import {Ethernaut} from "./Ethernaut.sol";
-import {Level} from "./Level.sol";
+import { Test } from "forge-std/Test.sol";
+import { Ethernaut } from "./Ethernaut.sol";
+import { Level } from "./Level.sol";
 
 abstract contract Tests is Test {
     Ethernaut private ethernaut;
     Level internal levelFactory;
     address payable internal levelAddress;
 
-    address internal constant PLAYER = address(uint160(uint256(keccak256("foundry default caller"))));
+    address internal constant PLAYER =
+        address(uint160(uint256(keccak256("foundry default caller"))));
     address internal constant RANDOM = address(1);
 
     /* ========================================== TEMPLATE OF EXECUTION ========================================== */
 
-    function setupLevel() internal virtual {}
+    function setupLevel() internal virtual { }
 
-    function attack() internal virtual {}
+    function attack() internal virtual { }
 
     /* ========================== "HARDCODED" EXECUTION ========================= */
 
@@ -33,7 +34,7 @@ abstract contract Tests is Test {
 
     function createLevelInstance() external payable returns (address) {
         vm.prank(PLAYER);
-        return ethernaut.createLevelInstance{value: msg.value}(levelFactory);
+        return ethernaut.createLevelInstance{ value: msg.value }(levelFactory);
     }
 
     function checkSuccess() private {

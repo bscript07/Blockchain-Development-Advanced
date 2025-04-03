@@ -2,8 +2,10 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import {StandardERC20} from "@/03_gas-optimizations/standart-erc20/StandardERC20.sol";
-import {OptimizedERC20} from "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
+import { StandardERC20 } from
+    "@/03_gas-optimizations/standart-erc20/StandardERC20.sol";
+import { OptimizedERC20 } from
+    "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
 
 contract ERC20GasCompareTest is Test {
     StandardERC20 public standardERC20;
@@ -18,8 +20,10 @@ contract ERC20GasCompareTest is Test {
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
 
-        standardERC20 = new StandardERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
-        optimizedERC20 = new OptimizedERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
+        standardERC20 =
+            new StandardERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
+        optimizedERC20 =
+            new OptimizedERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
 
         standardERC20.transfer(user1, 500000 * 10 ** 18);
         optimizedERC20.transfer(user1, 500000 * 10 ** 18);
@@ -42,7 +46,7 @@ contract ERC20GasCompareTest is Test {
     }
 
     function testGasCompareTransfer() public {
-        // 1. Test original contract 
+        // 1. Test original contract
         vm.prank(user1);
         uint256 originalGasBefore = gasleft();
         standardERC20.transfer(user2, 5000 * 10 ** 18);
@@ -63,16 +67,24 @@ contract ERC20GasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareApprove() public {
-        // 1. Test original contract 
+        // 1. Test original contract
         vm.prank(user1);
         uint256 originalGasBefore = gasleft();
         standardERC20.approve(user2, 5000 * 10 ** 18);
@@ -93,16 +105,23 @@ contract ERC20GasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareTransferFrom() public {
-
         // 1. Approve tokens for both contracts
         vm.startPrank(user1);
         standardERC20.approve(address(this), 50000 * 10 ** 18);
@@ -110,7 +129,7 @@ contract ERC20GasCompareTest is Test {
 
         vm.stopPrank();
 
-        // 2. Test original contract 
+        // 2. Test original contract
         vm.prank(user1);
         uint256 originalGasBefore = gasleft();
         standardERC20.transferFrom(user1, user2, 5000 * 10 ** 18);
@@ -131,10 +150,18 @@ contract ERC20GasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }

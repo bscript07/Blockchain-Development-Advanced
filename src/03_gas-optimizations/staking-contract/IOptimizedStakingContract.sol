@@ -8,7 +8,7 @@ contract IOptimizedStakingContract {
         uint256 lastUpdateBlock;
         uint256 earnedRewards;
     }
-    
+
     event Staked(address indexed user, uint256 amount);
     event Withdrawn(address indexed user, uint256 amount);
     event RewardClaim(address indexed user, uint256 reward);

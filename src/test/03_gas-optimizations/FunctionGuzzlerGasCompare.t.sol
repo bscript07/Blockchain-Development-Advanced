@@ -2,8 +2,10 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import {FunctionGuzzler} from "@/03_gas-optimizations/function-guzzler/FunctionGuzzler.sol";
-import {OptimizedFunctionGuzzler} from "@/03_gas-optimizations/function-guzzler/OptimizedFunctionGuzzler.sol";
+import { FunctionGuzzler } from
+    "@/03_gas-optimizations/function-guzzler/FunctionGuzzler.sol";
+import { OptimizedFunctionGuzzler } from
+    "@/03_gas-optimizations/function-guzzler/OptimizedFunctionGuzzler.sol";
 
 contract FunctionGuzzlerGasCompareTest is Test {
     // Contracts instances in state variables
@@ -27,7 +29,7 @@ contract FunctionGuzzlerGasCompareTest is Test {
         vm.prank(user2);
         functionGuzzler.registerUser();
 
-         // 2. Register users for testing optimized contract
+        // 2. Register users for testing optimized contract
         vm.prank(user1);
         optimizedFunctionGuzzler.registerUser();
 
@@ -62,16 +64,23 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareAddValue() public {
-
         // 1. Test original contract
         vm.prank(user1);
         uint256 originalGasBefore = gasleft();
@@ -93,16 +102,23 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareDeposit() public {
-
         // 1. Test original contract
         vm.prank(user1);
         uint256 originalGasBefore = gasleft();
@@ -124,16 +140,23 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareFindUser() public view {
-
         // 1. Test original contract
         uint256 originalGasBefore = gasleft();
         functionGuzzler.findUser(user1);
@@ -153,16 +176,23 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareTransfer() public {
-
         // 1. Make deposits to both contracts
         vm.startPrank(user1);
         functionGuzzler.deposit(5000);
@@ -190,16 +220,23 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }
 
     function testGasCompareSumValues() public {
-
         // 1. Add some values first to both contracts
         vm.startPrank(user1);
         functionGuzzler.addValue(100);
@@ -230,10 +267,18 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage saved:",
+                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
+            console.log(
+                "Percentage increase:",
+                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+                "%"
+            );
         }
         console.log("=================================================");
     }

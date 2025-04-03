@@ -4,7 +4,6 @@ pragma solidity 0.8.26;
 /**
  * @dev A contract that demonstrates inefficient function implementations
  */
-
 contract FunctionGuzzler {
     uint256 public totalValue;
     uint256[] public values;
