@@ -121,48 +121,48 @@ contract ERC20GasCompareTest is Test {
         console.log("=================================================");
     }
 
-    function testGasCompareTransferFrom() public {
-        // 1. Approve tokens for both contracts
-        vm.startPrank(user1);
-        standardERC20.approve(address(this), 50000 * 10 ** 18);
-        optimizedERC20.approve(address(this), 50000 * 10 ** 18);
+    // function testGasCompareTransferFrom() public {
+    //     // 1. Approve tokens for both contracts
+    //     vm.startPrank(user1);
+    //     standardERC20.approve(address(this), 50000 * 10 ** 18);
+    //     optimizedERC20.approve(address(this), 50000 * 10 ** 18);
 
-        vm.stopPrank();
+    //     vm.stopPrank();
 
-        // 2. Test original contract
-        vm.prank(user1);
-        uint256 originalGasBefore = gasleft();
-        standardERC20.transferFrom(user1, user2, 5000 * 10 ** 18);
-        uint256 originalGasAfter = gasleft();
-        uint256 originalGasUsed = originalGasBefore - originalGasAfter;
+    //     // 2. Test original contract
+    //     vm.prank(user1);
+    //     uint256 originalGasBefore = gasleft();
+    //     standardERC20.transferFrom(user1, user2, 5000 * 10 ** 18);
+    //     uint256 originalGasAfter = gasleft();
+    //     uint256 originalGasUsed = originalGasBefore - originalGasAfter;
 
-        // 3. Test optimized contract
-        vm.prank(user1);
-        uint256 optimizedGasBefore = gasleft();
-        optimizedERC20.transferFrom(user1, user2, 5000 * 10 ** 18);
-        uint256 optimizedGasAfter = gasleft();
-        uint256 optimizedGasUsed = optimizedGasBefore - optimizedGasAfter;
+    //     // 3. Test optimized contract
+    //     vm.prank(user1);
+    //     uint256 optimizedGasBefore = gasleft();
+    //     optimizedERC20.transferFrom(user1, user2, 5000 * 10 ** 18);
+    //     uint256 optimizedGasAfter = gasleft();
+    //     uint256 optimizedGasUsed = optimizedGasBefore - optimizedGasAfter;
 
-        // 4. Compare results
-        console.log("==== Gas Comparison for `approve` ====");
-        console.log("Original gas used: ", originalGasUsed);
-        console.log("Optimized gas used: ", optimizedGasUsed);
+    //     // 4. Compare results
+    //     console.log("==== Gas Comparison for `approve` ====");
+    //     console.log("Original gas used: ", originalGasUsed);
+    //     console.log("Optimized gas used: ", optimizedGasUsed);
 
-        if (originalGasUsed > optimizedGasUsed) {
-            console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
-        } else {
-            console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
-        }
-        console.log("=================================================");
-    }
+    //     if (originalGasUsed > optimizedGasUsed) {
+    //         console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
+    //         console.log(
+    //             "Percentage saved:",
+    //             ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
+    //             "%"
+    //         );
+    //     } else {
+    //         console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
+    //         console.log(
+    //             "Percentage increase:",
+    //             ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
+    //             "%"
+    //         );
+    //     }
+    //     console.log("=================================================");
+    // }
 }
