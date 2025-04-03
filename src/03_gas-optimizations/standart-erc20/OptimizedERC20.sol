@@ -21,6 +21,25 @@ contract OptimizedERC20 {
         decimals = _decimals;
 
         _mint(msg.sender, _initialSupply);
+    }    
+    
+    function _mint(address to, uint256 amount) internal virtual {
+        totalSupply += amount;
+
+        // Cannot overflow because the sum of all user balances can't exceed the max uint256 value
+        unchecked {
+            balanceOf[to] += amount;    
+        }
+
+        emit Transfer(address(0), to, amount);
+    }
+
+    function approve(address spender, uint256 amount) public returns (bool) {
+        allowance[msg.sender][spender] = amount;
+
+        emit Approval(msg.sender, spender, amount);
+
+        return true;
     }
 
     function transfer(address to, uint256 amount) public returns (bool) {
@@ -32,14 +51,6 @@ contract OptimizedERC20 {
         }
 
         emit Transfer(msg.sender, to, amount);
-
-        return true;
-    }
-
-    function approve(address spender, uint256 amount) public returns (bool) {
-        allowance[msg.sender][spender] = amount;
-
-        emit Approval(msg.sender, spender, amount);
 
         return true;
     }
@@ -64,15 +75,5 @@ contract OptimizedERC20 {
         return true;
     }
 
-    function _mint(address to, uint256 amount) internal virtual {
-        totalSupply += amount;
-
-        // Cannot overflow because the sum of all user balances can't exceed the max uint256 value
-        unchecked {
-            balanceOf[to] += amount;    
-        }
-
-        emit Transfer(address(0), to, amount);
-    }
 
 }

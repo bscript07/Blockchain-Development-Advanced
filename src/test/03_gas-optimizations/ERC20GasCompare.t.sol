@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
 import {StandardERC20} from "@/03_gas-optimizations/standart-erc20/StandardERC20.sol";
-import {OptimizedERC20} from "@/03_gas-optimizations/standart-erc20/OptimizedStandartERC20.sol";
+import {OptimizedERC20} from "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
 
 contract ERC20GasCompareTest is Test {
     StandardERC20 public standardERC20;
