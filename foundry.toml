@@ -1,6 +1,6 @@
 [profile.default]
 
-optimizer_runs = 9999999
+optimizer_runs = 200
 via_ir = true
 out = "build/out"
 cache_path = "build/cache"

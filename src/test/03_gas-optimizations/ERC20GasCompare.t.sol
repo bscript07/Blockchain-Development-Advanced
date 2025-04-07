@@ -15,6 +15,8 @@ contract ERC20GasCompareTest is Test {
     address public user1;
     address public user2;
 
+    
+
     function setUp() public {
         deployer = address(this);
         user1 = makeAddr("user1");
@@ -27,6 +29,9 @@ contract ERC20GasCompareTest is Test {
 
         standardERC20.transfer(user1, 500000 * 10 ** 18);
         optimizedERC20.transfer(user1, 500000 * 10 ** 18);
+
+        standardERC20.allowance(deployer, user1);
+        optimizedERC20.allowance(deployer, user1);
     }
 
     function testGasCompareDeploy() public {
