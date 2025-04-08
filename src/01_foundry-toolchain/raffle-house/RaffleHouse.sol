@@ -16,6 +16,7 @@ error RaffleNotEnded();
 error WinnerAlreadyChosen();
 error WinnerNotChosen();
 error NotWinner();
+error NoTicketsSold();
 
 /**
  * @title RaffleHouse
@@ -72,7 +73,7 @@ contract RaffleHouse is ReentrancyGuardTransient {
         string calldata raffleName,
         string calldata raffleSymbol
     ) public {
-        if (ticketPrice == 0) revert TicketPriceTooLow();
+        if (ticketPrice == 0) revert TicketPriceTooLow(); 
         if (raffleStart < block.timestamp) revert RaffleAlreadyStarted();
         if (raffleEnd <= raffleStart) revert InvalidRaffleEndTime();
         if (raffleEnd - raffleStart < MIN_DURATION)
@@ -131,27 +132,39 @@ contract RaffleHouse is ReentrancyGuardTransient {
      * @notice Choose a winner for a completed raffle
      * @param raffleId ID of the raffle
      */
-    function chooseWinner(uint256 raffleId) public nonReentrant {
-        if (raffleId >= raffleCount) revert RaffleDoesNotExist();
-        if (block.timestamp < raffles[raffleId].raffleEnd)
-            revert RaffleNotEnded();
-        if (raffles[raffleId].winningTicketIndex != 0)
-            revert WinnerAlreadyChosen();
+    function chooseWinner(uint256 raffleId) public {
+    // Retrieve the specific raffle
+    Raffle storage raffle = raffles[raffleId];
 
-        uint256 totalTickets = raffles[raffleId].ticketsContract.totalSupply();
+    // Check if raffle exists
+    if (raffleId >= raffleCount) revert RaffleDoesNotExist();
 
-        uint256 winningTicketIndex = uint256(
-            keccak256(
-                abi.encodePacked(
-                    block.timestamp,
-                    block.prevrandao,
-                    totalTickets
-                )
+    // Check if raffle has ended
+    if (block.timestamp <= raffle.raffleEnd) revert RaffleNotEnded();
+
+    // Check if tickets have been sold
+    uint256 ticketsSold = raffle.ticketsContract.totalSupply();
+    if (ticketsSold == 0) revert NoTicketsSold();
+
+    // Generate random winner
+    uint256 winningIndex = _generateRandomIndex(ticketsSold);
+    raffle.winningTicketIndex = winningIndex;
+
+    // Emit winner chosen event
+    emit WinnerChosen(raffleId, winningIndex);
+     }
+
+// Helper function to generate random index
+     function _generateRandomIndex(uint256 totalTickets) internal view returns (uint256) {
+    return uint256(
+        keccak256(
+            abi.encodePacked(
+                block.timestamp, 
+                block.prevrandao, 
+                msg.sender
             )
-        ) % totalTickets;
-
-        raffles[raffleId].winningTicketIndex = winningTicketIndex;
-        emit WinnerChosen(raffleId, winningTicketIndex);
+        )
+    ) % totalTickets + 1;
     }
 
     /**

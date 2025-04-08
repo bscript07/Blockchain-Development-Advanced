@@ -16,7 +16,8 @@ InvalidTicketPrice,
 RaffleNotEnded,
 WinnerAlreadyChosen,
 WinnerNotChosen,
-NotWinner} from "@/01_foundry-toolchain/raffle-house/RaffleHouse.sol";
+NotWinner,
+NoTicketsSold} from "@/01_foundry-toolchain/raffle-house/RaffleHouse.sol";
 
 
 event WinnerChosen(uint256 indexed raffleId, uint256 winningTicketIndex);
@@ -27,9 +28,8 @@ event PrizeClaimed(
     );
 
 contract RaffleHouseTest is Test {
-    RaffleHouse public raffleHouse;
-    TicketNFT public ticketNFT;
-    // Set user addresses
+    RaffleHouse raffleHouse;
+    TicketNFT ticketNFT;
     address public user1;
     address public user2;
 
@@ -80,6 +80,22 @@ contract RaffleHouseTest is Test {
 
     }
 
+
+    function testCreateRaffleAlreadyStarted() public {
+        uint256 ticketPrice = 1 ether; // 1 ether ticket price
+        
+        uint256 raffleStart = block.timestamp + 1 hours; // Set raffleStart 1 hour in the past
+        uint256 raffleEnd = block.timestamp + 2 hours; // Raffle ends 2 hours from now
+
+        // Name and symbol for raffle
+        string memory raffleName = "Test Raffle";
+        string memory raffleSymbol = "TRF";
+
+        vm.warp(block.timestamp + 2 hours + 1);
+        vm.expectRevert(RaffleAlreadyStarted.selector);
+        raffleHouse.createRaffle(ticketPrice, raffleStart, raffleEnd, raffleName, raffleSymbol);
+    }
+
     function testCreateRaffleWithInvalidEndTime() public {
         uint256 ticketPrice = 1 ether; // 1 ether ticket price
         
@@ -95,6 +111,7 @@ contract RaffleHouseTest is Test {
 
     function testCreateRaffleWithInsufficientDuration() public {
         uint256 ticketPrice = 1 ether;
+    
         uint256 raffleStart = block.timestamp + 1 hours;
         uint256 raffleEnd = raffleStart + 30 minutes; // More than start duration
         // Name and symbol for raffle
@@ -165,7 +182,7 @@ contract RaffleHouseTest is Test {
 
         vm.expectRevert(InvalidTicketPrice.selector); // Expect revert due to insufficient amount
         raffleHouse.buyTicket{value: insufficientAmount}(0); // Trying to buy with insufficient amount
-}
+    }
 
     // ---------------------------------GET RAFFLE-------------------------------------------//
     function testGetRaffleValid() public {
@@ -238,5 +255,77 @@ contract RaffleHouseTest is Test {
 
     // -----------------------------------WINNER---------------------------------------------//
 
+    function testChooseWinnerRaffleDoesNotExist() public {
+        vm.expectRevert(RaffleDoesNotExist.selector);
+        raffleHouse.chooseWinner(1);
+    }
+
+    function testChooseWinnerBeforeRaffleEnds() public {
+    // Create raffle
+    raffleHouse.createRaffle(
+        1 ether, 
+        block.timestamp + 1 hours, 
+        block.timestamp + 2 hours, 
+        "Test Raffle", 
+        "TRF"
+    );
+
+    // Try to choose winner before raffle ends
+    vm.expectRevert(RaffleNotEnded.selector);
+    raffleHouse.chooseWinner(0);
+    }
+
+     function testChooseWinnerNoTicketsSold() public {
+    // Create raffle
+    raffleHouse.createRaffle(
+        1 ether, 
+        block.timestamp + 1 hours, 
+        block.timestamp + 2 hours, 
+        "Test Raffle", 
+        "TRF"
+    );
+
+    // Move time past raffle end
+    vm.warp(block.timestamp + 2 hours + 1);
+
+    // Try to choose winner with no tickets sold
+    vm.expectRevert(NoTicketsSold.selector);
+    raffleHouse.chooseWinner(0);
+}
+
+// -------------------------------------CLAIM PRIZE-------------------------------------------//
+
+       function testClaimPrizeRaffleDoesNotExist() public {
+        vm.expectRevert(RaffleDoesNotExist.selector);
+        raffleHouse.claimPrize(1);
+    }
+
+    function testClaimPrizeRaffleNotEnded() public {    
+        // Create raffle
+    raffleHouse.createRaffle(
+        1 ether, 
+        block.timestamp + 1 hours, 
+        block.timestamp + 2 hours, 
+        "Test Raffle", 
+        "TRF"
+    );
+
+    // Try to choose winner before raffle ends
+    vm.expectRevert(RaffleNotEnded.selector);
+    raffleHouse.claimPrize(0);
+    }
+
+    function testClaimPrizeWinnerNotChosen() public {
+        uint256 ticketPrice = 1 ether;
+        uint256 raffleStart = block.timestamp + 1 days;
+        uint256 raffleEnd = raffleStart + 1 hours; // Set a short end duration for test
+
+        raffleHouse.createRaffle(ticketPrice, raffleStart, raffleEnd, "Test Raffle", "TRF");
+
+        // Manually fast-forward the blockchain to the end of the raffle
+        vm.warp(raffleEnd + 1);
+        vm.expectRevert(WinnerNotChosen.selector);
+        raffleHouse.claimPrize(0);
+    }
 
 }
