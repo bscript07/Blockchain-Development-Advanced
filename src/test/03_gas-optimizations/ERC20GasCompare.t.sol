@@ -2,10 +2,8 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import { StandardERC20 } from
-    "@/03_gas-optimizations/standart-erc20/StandardERC20.sol";
-import { OptimizedERC20 } from
-    "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
+import { StandardERC20 } from "@/03_gas-optimizations/standart-erc20/StandardERC20.sol";
+import { OptimizedERC20 } from "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
 
 contract ERC20GasCompareTest is Test {
     StandardERC20 public standardERC20;
@@ -15,17 +13,13 @@ contract ERC20GasCompareTest is Test {
     address public user1;
     address public user2;
 
-    
-
     function setUp() public {
         deployer = address(this);
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
 
-        standardERC20 =
-            new StandardERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
-        optimizedERC20 =
-            new OptimizedERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
+        standardERC20 = new StandardERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
+        optimizedERC20 = new OptimizedERC20("Test TKN", "TST", 18, 5000000 * 10 ** 18);
 
         standardERC20.transfer(user1, 500000 * 10 ** 18);
         optimizedERC20.transfer(user1, 500000 * 10 ** 18);
@@ -72,18 +66,10 @@ contract ERC20GasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }
@@ -110,18 +96,10 @@ contract ERC20GasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }

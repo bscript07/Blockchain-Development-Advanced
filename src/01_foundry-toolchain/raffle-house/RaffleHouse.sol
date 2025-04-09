@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {TicketNFT} from "../ticketNFT/TicketNFT.sol";
-import {ReentrancyGuardTransient} from "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
+import { TicketNFT } from "../ticketNFT/TicketNFT.sol";
+import { ReentrancyGuardTransient } from "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
 
 error TicketPriceTooLow();
 error RaffleAlreadyStarted();
@@ -46,17 +46,9 @@ contract RaffleHouse is ReentrancyGuardTransient {
         string raffleName,
         string raffleSymbol
     );
-    event TicketPurchased(
-        uint256 indexed raffleId,
-        address indexed buyer,
-        uint256 ticketId
-    );
+    event TicketPurchased(uint256 indexed raffleId, address indexed buyer, uint256 ticketId);
     event WinnerChosen(uint256 indexed raffleId, uint256 winningTicketIndex);
-    event PrizeClaimed(
-        uint256 indexed raffleId,
-        address indexed winner,
-        uint256 prizeAmount
-    );
+    event PrizeClaimed(uint256 indexed raffleId, address indexed winner, uint256 prizeAmount);
 
     /**
      * @notice Creates a new raffle with specified parameters
@@ -73,11 +65,12 @@ contract RaffleHouse is ReentrancyGuardTransient {
         string calldata raffleName,
         string calldata raffleSymbol
     ) public {
-        if (ticketPrice == 0) revert TicketPriceTooLow(); 
+        if (ticketPrice == 0) revert TicketPriceTooLow();
         if (raffleStart < block.timestamp) revert RaffleAlreadyStarted();
         if (raffleEnd <= raffleStart) revert InvalidRaffleEndTime();
-        if (raffleEnd - raffleStart < MIN_DURATION)
+        if (raffleEnd - raffleStart < MIN_DURATION) {
             revert InsufficientRaffleDuration();
+        }
 
         TicketNFT ticketsContract = new TicketNFT(raffleName, raffleSymbol);
 
@@ -89,14 +82,7 @@ contract RaffleHouse is ReentrancyGuardTransient {
             winningTicketIndex: 0
         });
         raffles[raffleCount] = raffle;
-        emit RaffleCreated(
-            raffleCount++,
-            ticketPrice,
-            raffleStart,
-            raffleEnd,
-            raffleName,
-            raffleSymbol
-        );
+        emit RaffleCreated(raffleCount++, ticketPrice, raffleStart, raffleEnd, raffleName, raffleSymbol);
     }
 
     /**
@@ -105,16 +91,17 @@ contract RaffleHouse is ReentrancyGuardTransient {
      */
     function buyTicket(uint256 raffleId) public payable nonReentrant {
         if (raffleId >= raffleCount) revert RaffleDoesNotExist();
-        if (block.timestamp < raffles[raffleId].raffleStart)
+        if (block.timestamp < raffles[raffleId].raffleStart) {
             revert RaffleNotStarted();
-        if (block.timestamp >= raffles[raffleId].raffleEnd)
+        }
+        if (block.timestamp >= raffles[raffleId].raffleEnd) {
             revert RaffleEnded();
-        if (msg.value != raffles[raffleId].ticketPrice)
+        }
+        if (msg.value != raffles[raffleId].ticketPrice) {
             revert InvalidTicketPrice();
+        }
 
-        uint256 ticketId = raffles[raffleId].ticketsContract.safeMint(
-            msg.sender
-        );
+        uint256 ticketId = raffles[raffleId].ticketsContract.safeMint(msg.sender);
         emit TicketPurchased(raffleId, msg.sender, ticketId);
     }
 
@@ -133,38 +120,30 @@ contract RaffleHouse is ReentrancyGuardTransient {
      * @param raffleId ID of the raffle
      */
     function chooseWinner(uint256 raffleId) public {
-    // Retrieve the specific raffle
-    Raffle storage raffle = raffles[raffleId];
+        // Retrieve the specific raffle
+        Raffle storage raffle = raffles[raffleId];
 
-    // Check if raffle exists
-    if (raffleId >= raffleCount) revert RaffleDoesNotExist();
+        // Check if raffle exists
+        if (raffleId >= raffleCount) revert RaffleDoesNotExist();
 
-    // Check if raffle has ended
-    if (block.timestamp <= raffle.raffleEnd) revert RaffleNotEnded();
+        // Check if raffle has ended
+        if (block.timestamp <= raffle.raffleEnd) revert RaffleNotEnded();
 
-    // Check if tickets have been sold
-    uint256 ticketsSold = raffle.ticketsContract.totalSupply();
-    if (ticketsSold == 0) revert NoTicketsSold();
+        // Check if tickets have been sold
+        uint256 ticketsSold = raffle.ticketsContract.totalSupply();
+        if (ticketsSold == 0) revert NoTicketsSold();
 
-    // Generate random winner
-    uint256 winningIndex = _generateRandomIndex(ticketsSold);
-    raffle.winningTicketIndex = winningIndex;
+        // Generate random winner
+        uint256 winningIndex = _generateRandomIndex(ticketsSold);
+        raffle.winningTicketIndex = winningIndex;
 
-    // Emit winner chosen event
-    emit WinnerChosen(raffleId, winningIndex);
-     }
+        // Emit winner chosen event
+        emit WinnerChosen(raffleId, winningIndex);
+    }
 
-// Helper function to generate random index
-     function _generateRandomIndex(uint256 totalTickets) internal view returns (uint256) {
-    return uint256(
-        keccak256(
-            abi.encodePacked(
-                block.timestamp, 
-                block.prevrandao, 
-                msg.sender
-            )
-        )
-    ) % totalTickets + 1;
+    // Helper function to generate random index
+    function _generateRandomIndex(uint256 totalTickets) internal view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender))) % totalTickets + 1;
     }
 
     /**
@@ -173,22 +152,15 @@ contract RaffleHouse is ReentrancyGuardTransient {
      */
     function claimPrize(uint256 raffleId) public nonReentrant {
         if (raffleId >= raffleCount) revert RaffleDoesNotExist();
-        if (block.timestamp < raffles[raffleId].raffleEnd)
+        if (block.timestamp < raffles[raffleId].raffleEnd) {
             revert RaffleNotEnded();
+        }
         if (raffles[raffleId].winningTicketIndex == 0) revert WinnerNotChosen();
-        if (
-            raffles[raffleId].ticketsContract.ownerOf(
-                raffles[raffleId].winningTicketIndex
-            ) != msg.sender
-        ) {
+        if (raffles[raffleId].ticketsContract.ownerOf(raffles[raffleId].winningTicketIndex) != msg.sender) {
             revert NotWinner();
         }
 
-        raffles[raffleId].ticketsContract.transferFrom(
-            msg.sender,
-            address(this),
-            raffles[raffleId].winningTicketIndex
-        );
+        raffles[raffleId].ticketsContract.transferFrom(msg.sender, address(this), raffles[raffleId].winningTicketIndex);
 
         uint256 ticketsCount = raffles[raffleId].ticketsContract.totalSupply();
         uint256 prizeAmount = raffles[raffleId].ticketPrice * ticketsCount;

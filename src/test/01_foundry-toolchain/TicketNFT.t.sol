@@ -2,11 +2,10 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import {TicketNFT} from "@/01_foundry-toolchain/ticketNFT/TicketNFT.sol";
-import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-
+import { TicketNFT } from "@/01_foundry-toolchain/ticketNFT/TicketNFT.sol";
+import { Ownable2Step } from "@openzeppelin/contracts/access/Ownable2Step.sol";
+import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import { ERC721Enumerable } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract TicketNFTTest is Test {
     TicketNFT ticketNFT;
@@ -23,70 +22,69 @@ contract TicketNFTTest is Test {
 
     // ------------------------------------------CONSTRUCTOR----------------------------------//
     function testConstructorState() public {
-       string memory name = "Raffle Ticket";
-       string memory symbol = "RTCK";
-       TicketNFT newTicketNFT = new TicketNFT(name, symbol);
-    
-    // Check that the contract name is set correctly
-    assertEq(newTicketNFT.name(), name);
-    
-    // Check that the contract symbol is set correctly
-    assertEq(newTicketNFT.symbol(), symbol);
-}
+        string memory name = "Raffle Ticket";
+        string memory symbol = "RTCK";
+        TicketNFT newTicketNFT = new TicketNFT(name, symbol);
+
+        // Check that the contract name is set correctly
+        assertEq(newTicketNFT.name(), name);
+
+        // Check that the contract symbol is set correctly
+        assertEq(newTicketNFT.symbol(), symbol);
+    }
 
     // ------------------------------------------OWNERSHIP------------------------------------//
 
     function testOwnership() public view {
-         // Ensure that the contract owner is the address that deployed the contract
+        // Ensure that the contract owner is the address that deployed the contract
         assertEq(ticketNFT.owner(), address(this));
     }
 
     function testOwnershipTransfer() public {
-       address newOwner = user1;
-       ticketNFT.transferOwnership(newOwner);
-       vm.prank(newOwner);
-       ticketNFT.acceptOwnership();
+        address newOwner = user1;
+        ticketNFT.transferOwnership(newOwner);
+        vm.prank(newOwner);
+        ticketNFT.acceptOwnership();
 
-       // Check the new owner
-       assertEq(ticketNFT.owner(), newOwner);
-}
+        // Check the new owner
+        assertEq(ticketNFT.owner(), newOwner);
+    }
 
     function testTransferOwnershipRevert() public {
-      // Trying to accept ownership as a non-proposed address should fail
-    address newOwner = user1;
-    ticketNFT.transferOwnership(newOwner);
-    
-    vm.prank(user2); // user2 is not the proposed new owner
-    vm.expectRevert(bytes4(keccak256("OwnableUnauthorizedAccount()")), 0);
-    ticketNFT.acceptOwnership();
-}
+        // Trying to accept ownership as a non-proposed address should fail
+        address newOwner = user1;
+        ticketNFT.transferOwnership(newOwner);
 
+        vm.prank(user2); // user2 is not the proposed new owner
+        vm.expectRevert(bytes4(keccak256("OwnableUnauthorizedAccount()")), 0);
+        ticketNFT.acceptOwnership();
+    }
 
     // ------------------------------------------MINTING--------------------------------------//
-    // 1. Successfull Minting 
+    // 1. Successfull Minting
     function testSafeMintSuccess() public {
         uint256 tokenId = ticketNFT.safeMint(user1);
 
         // Check the token owner and that the tokenId is correct
         assertEq(ticketNFT.ownerOf(tokenId), user1);
         // The first token minted should have tokenId 0
-        assertEq(tokenId, 0); 
+        assertEq(tokenId, 0);
     }
 
     // 2. Check if minting to the zero address reverts
     function testMintWithZeroAddress() public {
-    // Minting to address(0) should fail
-    vm.expectRevert("ERC721: mint to the zero address", 0);
-    ticketNFT.safeMint(address(0));
-}
+        // Minting to address(0) should fail
+        vm.expectRevert("ERC721: mint to the zero address", 0);
+        ticketNFT.safeMint(address(0));
+    }
 
     // 3. Only owner can mint
     function testSafeMintOnlyOwner() public {
-         // Try minting from a non-owner address (user2 should fail)
-         vm.prank(user2);
-         vm.expectRevert(bytes4(keccak256("OwnableUnauthorizedAccount()")), 0);
+        // Try minting from a non-owner address (user2 should fail)
+        vm.prank(user2);
+        vm.expectRevert(bytes4(keccak256("OwnableUnauthorizedAccount()")), 0);
 
-         ticketNFT.safeMint(user2);
+        ticketNFT.safeMint(user2);
     }
 
     // 4. Token ID incrementation
@@ -103,29 +101,28 @@ contract TicketNFTTest is Test {
     }
 
     function testMultipleMints() public {
-       uint256 tokenId1 = ticketNFT.safeMint(user1);
-       uint256 tokenId2 = ticketNFT.safeMint(user1);
-       uint256 tokenId3 = ticketNFT.safeMint(user2);
+        uint256 tokenId1 = ticketNFT.safeMint(user1);
+        uint256 tokenId2 = ticketNFT.safeMint(user1);
+        uint256 tokenId3 = ticketNFT.safeMint(user2);
 
-    // Ensure tokenId is incremented correctly
-    assertEq(tokenId1, 0);
-    assertEq(tokenId2, 1);
-    assertEq(tokenId3, 2);
-}
-
-    function testTokenIdOverflow() public {
-    // Mint a large number of tokens to test token ID overflow.
-    for (uint256 i = 0; i < 10; i++) {
-        ticketNFT.safeMint(user1);
+        // Ensure tokenId is incremented correctly
+        assertEq(tokenId1, 0);
+        assertEq(tokenId2, 1);
+        assertEq(tokenId3, 2);
     }
 
-    uint256 tokenId = ticketNFT.safeMint(user2);
-    
-    // Ensure the token ID increments as expected.
-    assertEq(tokenId, 10);
-    assertEq(ticketNFT.ownerOf(tokenId), user2);
-}
+    function testTokenIdOverflow() public {
+        // Mint a large number of tokens to test token ID overflow.
+        for (uint256 i = 0; i < 10; i++) {
+            ticketNFT.safeMint(user1);
+        }
 
+        uint256 tokenId = ticketNFT.safeMint(user2);
+
+        // Ensure the token ID increments as expected.
+        assertEq(tokenId, 10);
+        assertEq(ticketNFT.ownerOf(tokenId), user2);
+    }
 
     // ------------------------------------------INTERFACE--------------------------------------//
     // 1. Check that the contract supports ERC721 interface
@@ -189,11 +186,10 @@ contract TicketNFTTest is Test {
 
     // Test _update and _increaseBalance directly (through minting and ownership update)
     function testUpdateAndIncreaseBalance() public {
-    uint256 tokenId = ticketNFT.safeMint(user1);
+        uint256 tokenId = ticketNFT.safeMint(user1);
 
-    // Verify the balance and ownership update correctly
-    assertEq(ticketNFT.balanceOf(user1), 1);
-    assertEq(ticketNFT.ownerOf(tokenId), user1);
-}
-
+        // Verify the balance and ownership update correctly
+        assertEq(ticketNFT.balanceOf(user1), 1);
+        assertEq(ticketNFT.ownerOf(tokenId), user1);
+    }
 }

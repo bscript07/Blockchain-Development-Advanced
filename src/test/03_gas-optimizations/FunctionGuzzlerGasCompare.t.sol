@@ -2,10 +2,8 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import { FunctionGuzzler } from
-    "@/03_gas-optimizations/function-guzzler/FunctionGuzzler.sol";
-import { OptimizedFunctionGuzzler } from
-    "@/03_gas-optimizations/function-guzzler/OptimizedFunctionGuzzler.sol";
+import { FunctionGuzzler } from "@/03_gas-optimizations/function-guzzler/FunctionGuzzler.sol";
+import { OptimizedFunctionGuzzler } from "@/03_gas-optimizations/function-guzzler/OptimizedFunctionGuzzler.sol";
 
 contract FunctionGuzzlerGasCompareTest is Test {
     // Contracts instances in state variables
@@ -64,18 +62,10 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }
@@ -102,18 +92,10 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }
@@ -140,18 +122,10 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }
@@ -176,18 +150,10 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }
@@ -220,18 +186,10 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }
@@ -267,18 +225,10 @@ contract FunctionGuzzlerGasCompareTest is Test {
 
         if (originalGasUsed > optimizedGasUsed) {
             console.log("Gas saved: ", originalGasUsed - optimizedGasUsed);
-            console.log(
-                "Percentage saved:",
-                ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage saved:", ((originalGasUsed - optimizedGasUsed) * 100) / originalGasUsed, "%");
         } else {
             console.log("Gas increase: ", optimizedGasUsed - originalGasUsed);
-            console.log(
-                "Percentage increase:",
-                ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed,
-                "%"
-            );
+            console.log("Percentage increase:", ((optimizedGasUsed - originalGasUsed) * 100) / originalGasUsed, "%");
         }
         console.log("=================================================");
     }

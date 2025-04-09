@@ -62,35 +62,25 @@ contract OptimizedStakingContract is IOptimizedStakingContract {
         }
     }
 
-    function getPendingReward(address account)
-        external
-        view
-        returns (uint256 pending)
-    {
+    function getPendingReward(address account) external view returns (uint256 pending) {
         Staker storage staker = stakers[account];
 
         pending = staker.earnedRewards;
 
         if (staker.stakedAmount > 0) {
-            pending +=
-                _calculateRewards(staker.stakedAmount, staker.lastUpdateBlock);
+            pending += _calculateRewards(staker.stakedAmount, staker.lastUpdateBlock);
         }
     }
 
     function _updateReward(Staker storage staker) private {
         if (staker.stakedAmount > 0) {
-            staker.earnedRewards +=
-                _calculateRewards(staker.stakedAmount, staker.lastUpdateBlock);
+            staker.earnedRewards += _calculateRewards(staker.stakedAmount, staker.lastUpdateBlock);
         }
 
         staker.lastUpdateBlock = block.number;
     }
 
-    function _calculateRewards(uint256 _stakedAmount, uint256 _lastUpdateBlock)
-        private
-        view
-        returns (uint256)
-    {
+    function _calculateRewards(uint256 _stakedAmount, uint256 _lastUpdateBlock) private view returns (uint256) {
         uint256 blocksLastUpdate = block.number - _lastUpdateBlock;
         return (_stakedAmount * REWARD_RATE * blocksLastUpdate) / 1e18;
     }

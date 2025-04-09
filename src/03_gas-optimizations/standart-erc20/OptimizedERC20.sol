@@ -12,16 +12,9 @@ contract OptimizedERC20 {
     mapping(address => mapping(address => uint256)) public allowance;
 
     event Transfer(address indexed from, address indexed to, uint256 amount);
-    event Approval(
-        address indexed owner, address indexed spender, uint256 amount
-    );
+    event Approval(address indexed owner, address indexed spender, uint256 amount);
 
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        uint8 _decimals,
-        uint256 _initialSupply
-    ) {
+    constructor(string memory _name, string memory _symbol, uint8 _decimals, uint256 _initialSupply) {
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
@@ -61,10 +54,7 @@ contract OptimizedERC20 {
         return true;
     }
 
-    function transferFrom(address from, address to, uint256 amount)
-        public
-        returns (bool)
-    {
+    function transferFrom(address from, address to, uint256 amount) public returns (bool) {
         // Saves gas for limited approvals.
         uint256 allowed = allowance[from][msg.sender];
         if (allowed != type(uint256).max) {

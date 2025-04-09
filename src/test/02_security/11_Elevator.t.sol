@@ -2,12 +2,8 @@
 pragma solidity 0.8.26;
 
 import { Tests } from "@/02_security/core/Tests.sol";
-import {
-    ElevatorFactory,
-    Elevator
-} from "@/02_security/levels/11_Elevator/ElevatorFactory.sol";
-import { MaliciousElevator } from
-    "@/02_security/levels/11_Elevator/MaliciousElevator.sol";
+import { ElevatorFactory, Elevator } from "@/02_security/levels/11_Elevator/ElevatorFactory.sol";
+import { MaliciousElevator } from "@/02_security/levels/11_Elevator/MaliciousElevator.sol";
 
 contract TestElevator is Tests {
     Elevator private level;
@@ -24,8 +20,7 @@ contract TestElevator is Tests {
     function attack() internal override {
         vm.startPrank(PLAYER);
 
-        MaliciousElevator maliciousElevator =
-            new MaliciousElevator(levelAddress);
+        MaliciousElevator maliciousElevator = new MaliciousElevator(levelAddress);
         maliciousElevator.attack();
         assertTrue(level.top());
 

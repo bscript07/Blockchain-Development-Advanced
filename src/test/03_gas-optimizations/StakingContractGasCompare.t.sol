@@ -3,12 +3,9 @@ pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
 
-import { StakingContract } from
-    "@/03_gas-optimizations/staking-contract/StakingContract.sol";
-import { OptimizedStakingContract } from
-    "@/03_gas-optimizations/staking-contract/OptimizedStakingContract.sol";
-import { OptimizedERC20 } from
-    "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
+import { StakingContract } from "@/03_gas-optimizations/staking-contract/StakingContract.sol";
+import { OptimizedStakingContract } from "@/03_gas-optimizations/staking-contract/OptimizedStakingContract.sol";
+import { OptimizedERC20 } from "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
 
 contract StakingContractGasCompareTest is Test {
     uint256 constant REWARD_RATE = 100; // 100%
@@ -26,8 +23,7 @@ contract StakingContractGasCompareTest is Test {
 
         // 2. Deploy staking contracts with same rewards rate
         originalContract = new StakingContract(address(token));
-        optimizedContract =
-            new OptimizedStakingContract(address(token), REWARD_RATE);
+        optimizedContract = new OptimizedStakingContract(address(token), REWARD_RATE);
 
         // 3. Setup test users
         lili = makeAddr("lili");
@@ -55,16 +51,14 @@ contract StakingContractGasCompareTest is Test {
         uint256 originalContractGasBefore = gasleft();
         originalContract.stake(1000 * 10 ** 18); // 1k tokens for stake
         uint256 originalContractGasAfter = gasleft();
-        uint256 originalContractGasUsed =
-            originalContractGasBefore - originalContractGasAfter;
+        uint256 originalContractGasUsed = originalContractGasBefore - originalContractGasAfter;
 
         // 2. Test optimized contract
         vm.prank(lili);
         uint256 optimizedContractGasBefore = gasleft();
         optimizedContract.stake(1000 * 10 ** 18); // 1k tokens for stake
         uint256 optimizedContractGasAfter = gasleft();
-        uint256 optimizedContractGasUsed =
-            optimizedContractGasBefore - optimizedContractGasAfter;
+        uint256 optimizedContractGasUsed = optimizedContractGasBefore - optimizedContractGasAfter;
 
         // 3. Compare results
 
@@ -73,25 +67,15 @@ contract StakingContractGasCompareTest is Test {
         console.log("Optimized contract gas used: ", optimizedContractGasUsed);
 
         if (originalContractGasUsed > optimizedContractGasUsed) {
+            console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Gas saved: ",
-                originalContractGasUsed - optimizedContractGasUsed
-            );
-            console.log(
-                "Percentage saved:",
-                ((originalContractGasUsed - optimizedContractGasUsed) * 100)
-                    / originalContractGasUsed,
-                "%"
+                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
             );
         } else {
-            console.log(
-                "Gas increase: ",
-                optimizedContractGasUsed - originalContractGasUsed
-            );
+            console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
             console.log(
                 "Percentage increase:",
-                ((optimizedContractGasUsed - originalContractGasUsed) * 100)
-                    / originalContractGasUsed,
+                ((optimizedContractGasUsed - originalContractGasUsed) * 100) / originalContractGasUsed,
                 "%"
             );
         }
@@ -113,16 +97,14 @@ contract StakingContractGasCompareTest is Test {
         uint256 originalContractGasBefore = gasleft();
         originalContract.withdraw(500 * 10 ** 18); // 500 tokens for withdraw
         uint256 originalContractGasAfter = gasleft();
-        uint256 originalContractGasUsed =
-            originalContractGasBefore - originalContractGasAfter;
+        uint256 originalContractGasUsed = originalContractGasBefore - originalContractGasAfter;
 
         // 4. Test optimized contract
         vm.prank(lili);
         uint256 optimizedContractGasBefore = gasleft();
         optimizedContract.withdraw(500 * 10 ** 18); // 500 tokens for withdraw
         uint256 optimizedContractGasAfter = gasleft();
-        uint256 optimizedContractGasUsed =
-            optimizedContractGasBefore - optimizedContractGasAfter;
+        uint256 optimizedContractGasUsed = optimizedContractGasBefore - optimizedContractGasAfter;
 
         // 3. Compare results
 
@@ -131,25 +113,15 @@ contract StakingContractGasCompareTest is Test {
         console.log("Optimized contract gas used: ", optimizedContractGasUsed);
 
         if (originalContractGasUsed > optimizedContractGasUsed) {
+            console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Gas saved: ",
-                originalContractGasUsed - optimizedContractGasUsed
-            );
-            console.log(
-                "Percentage saved:",
-                ((originalContractGasUsed - optimizedContractGasUsed) * 100)
-                    / originalContractGasUsed,
-                "%"
+                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
             );
         } else {
-            console.log(
-                "Gas increase: ",
-                optimizedContractGasUsed - originalContractGasUsed
-            );
+            console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
             console.log(
                 "Percentage increase:",
-                ((optimizedContractGasUsed - originalContractGasUsed) * 100)
-                    / originalContractGasUsed,
+                ((optimizedContractGasUsed - originalContractGasUsed) * 100) / originalContractGasUsed,
                 "%"
             );
         }
@@ -171,16 +143,14 @@ contract StakingContractGasCompareTest is Test {
         uint256 originalContractGasBefore = gasleft();
         originalContract.claimReward();
         uint256 originalContractGasAfter = gasleft();
-        uint256 originalContractGasUsed =
-            originalContractGasBefore - originalContractGasAfter;
+        uint256 originalContractGasUsed = originalContractGasBefore - originalContractGasAfter;
 
         // 4. Test optimized contract
         vm.prank(lili);
         uint256 optimizedContractGasBefore = gasleft();
         optimizedContract.claimReward();
         uint256 optimizedContractGasAfter = gasleft();
-        uint256 optimizedContractGasUsed =
-            optimizedContractGasBefore - optimizedContractGasAfter;
+        uint256 optimizedContractGasUsed = optimizedContractGasBefore - optimizedContractGasAfter;
 
         // 3. Compare results
 
@@ -189,25 +159,15 @@ contract StakingContractGasCompareTest is Test {
         console.log("Optimized contract gas used: ", optimizedContractGasUsed);
 
         if (originalContractGasUsed > optimizedContractGasUsed) {
+            console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Gas saved: ",
-                originalContractGasUsed - optimizedContractGasUsed
-            );
-            console.log(
-                "Percentage saved:",
-                ((originalContractGasUsed - optimizedContractGasUsed) * 100)
-                    / originalContractGasUsed,
-                "%"
+                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
             );
         } else {
-            console.log(
-                "Gas increase: ",
-                optimizedContractGasUsed - originalContractGasUsed
-            );
+            console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
             console.log(
                 "Percentage increase:",
-                ((optimizedContractGasUsed - originalContractGasUsed) * 100)
-                    / originalContractGasUsed,
+                ((optimizedContractGasUsed - originalContractGasUsed) * 100) / originalContractGasUsed,
                 "%"
             );
         }
@@ -229,16 +189,14 @@ contract StakingContractGasCompareTest is Test {
         uint256 originalContractGasBefore = gasleft();
         originalContract.pendingReward(lili);
         uint256 originalContractGasAfter = gasleft();
-        uint256 originalContractGasUsed =
-            originalContractGasBefore - originalContractGasAfter;
+        uint256 originalContractGasUsed = originalContractGasBefore - originalContractGasAfter;
 
         // 4. Test optimized contract
         vm.prank(lili);
         uint256 optimizedContractGasBefore = gasleft();
         optimizedContract.getPendingReward(lili);
         uint256 optimizedContractGasAfter = gasleft();
-        uint256 optimizedContractGasUsed =
-            optimizedContractGasBefore - optimizedContractGasAfter;
+        uint256 optimizedContractGasUsed = optimizedContractGasBefore - optimizedContractGasAfter;
 
         // 3. Compare results
 
@@ -247,25 +205,15 @@ contract StakingContractGasCompareTest is Test {
         console.log("Optimized contract gas used: ", optimizedContractGasUsed);
 
         if (originalContractGasUsed > optimizedContractGasUsed) {
+            console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Gas saved: ",
-                originalContractGasUsed - optimizedContractGasUsed
-            );
-            console.log(
-                "Percentage saved:",
-                ((originalContractGasUsed - optimizedContractGasUsed) * 100)
-                    / originalContractGasUsed,
-                "%"
+                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
             );
         } else {
-            console.log(
-                "Gas increase: ",
-                optimizedContractGasUsed - originalContractGasUsed
-            );
+            console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
             console.log(
                 "Percentage increase:",
-                ((optimizedContractGasUsed - originalContractGasUsed) * 100)
-                    / originalContractGasUsed,
+                ((optimizedContractGasUsed - originalContractGasUsed) * 100) / originalContractGasUsed,
                 "%"
             );
         }

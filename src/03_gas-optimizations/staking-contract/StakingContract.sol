@@ -4,22 +4,13 @@ pragma solidity 0.8.26;
 interface IERC20 {
     function totalSupply() external view returns (uint256);
     function balanceOf(address account) external view returns (uint256);
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool);
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256);
+    function transfer(address recipient, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
     function approve(address spender, uint256 amount) external returns (bool);
-    function transferFrom(address sender, address recipient, uint256 amount)
-        external
-        returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(
-        address indexed owner, address indexed spender, uint256 value
-    );
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
 /**
@@ -62,9 +53,7 @@ contract StakingContract {
 
     function withdraw(uint256 amount) external {
         require(amount > 0, "Cannot withdraw 0");
-        require(
-            userInfo[msg.sender].stakedAmount >= amount, "Not enough staked"
-        );
+        require(userInfo[msg.sender].stakedAmount >= amount, "Not enough staked");
 
         updateReward(msg.sender);
 
@@ -90,8 +79,7 @@ contract StakingContract {
 
         if (user.stakedAmount > 0) {
             uint256 blocksSinceLastUpdate = block.number - user.lastUpdateBlock;
-            uint256 newRewards =
-                (user.stakedAmount * rewardRate * blocksSinceLastUpdate) / 1e18;
+            uint256 newRewards = (user.stakedAmount * rewardRate * blocksSinceLastUpdate) / 1e18;
             user.rewardsAccumulated += newRewards;
         }
 
@@ -111,8 +99,7 @@ contract StakingContract {
 
         if (user.stakedAmount > 0) {
             uint256 blocksSinceLastUpdate = block.number - user.lastUpdateBlock;
-            uint256 newRewards =
-                (user.stakedAmount * rewardRate * blocksSinceLastUpdate) / 1e18;
+            uint256 newRewards = (user.stakedAmount * rewardRate * blocksSinceLastUpdate) / 1e18;
             pending += newRewards;
         }
 

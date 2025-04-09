@@ -10,8 +10,7 @@ abstract contract Tests is Test {
     Level internal levelFactory;
     address payable internal levelAddress;
 
-    address internal constant PLAYER =
-        address(uint160(uint256(keccak256("foundry default caller"))));
+    address internal constant PLAYER = address(uint160(uint256(keccak256("foundry default caller"))));
     address internal constant RANDOM = address(1);
 
     /* ========================================== TEMPLATE OF EXECUTION ========================================== */
