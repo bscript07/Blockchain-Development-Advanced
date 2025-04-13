@@ -2,8 +2,12 @@ name: CI
 
 on:
   push:
+    branches:
+      - main  # Trigger on push to main branch, adjust if necessary
   pull_request:
-  workflow_dispatch:
+    branches:
+      - main  # Trigger on pull request to main branch
+  workflow_dispatch: # Allow manual triggers from the GitHub UI
 
 env:
   FOUNDRY_PROFILE: ci
@@ -16,26 +20,33 @@ jobs:
     name: Foundry project
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
+      # Install Foundry toolchain
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
+      # Show Forge version (useful for debugging)
       - name: Show Forge version
         run: |
           forge --version
+
+      # Run Forge fmt to check formatting
       - name: Run Forge fmt
         run: |
           forge fmt --check
         id: fmt
 
+       # Build the project (optional, this shows contract sizes)
       - name: Run Forge build
         run: |
           forge build --sizes
         id: build
 
+      # Run Forge tests
       - name: Run Forge tests
         run: |
           forge test -vvv
