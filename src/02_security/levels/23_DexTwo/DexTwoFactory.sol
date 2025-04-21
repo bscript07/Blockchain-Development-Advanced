@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import { Level } from "@/02_security/core/Level.sol";
-import { DexTwo, SwappableTokenTwo, IERC20 } from "./DexTwo.sol";
+import {Level} from "@/02_security/core/Level.sol";
+import {DexTwo, SwappableTokenTwo, IERC20} from "./DexTwo.sol";
 
 contract DexTwoFactory is Level(msg.sender) {
     function createInstance(address _player) public payable override returns (address instanceAddr) {

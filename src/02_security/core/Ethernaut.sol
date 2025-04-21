@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { Level } from "./Level.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Level} from "./Level.sol";
 
 contract Ethernaut is Ownable(msg.sender) {
     // ----------------------------------
@@ -36,7 +36,7 @@ contract Ethernaut is Ownable(msg.sender) {
         require(registeredLevels[address(_level)], "This level doesn't exists");
 
         // Get level factory to create an instance.
-        instance = _level.createInstance{ value: msg.value }(msg.sender);
+        instance = _level.createInstance{value: msg.value}(msg.sender);
 
         // Store emitted instance relationship with player and level.
         emittedInstances[instance] = EmittedInstanceData(msg.sender, _level, false);

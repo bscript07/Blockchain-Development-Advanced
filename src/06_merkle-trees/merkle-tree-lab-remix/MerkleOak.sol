@@ -29,7 +29,7 @@ contract MerkleVerifier is Ownable {
     // 🔐 Only the owner can update the Merkle root
     function updateRoot(bytes32 _newRoot) external onlyOwner {
         merkleRoot = _newRoot;
-        // Emit updated hash root 
+        // Emit updated hash root
         emit MerkleRootUpdated(_newRoot);
     }
 
@@ -56,7 +56,7 @@ contract MerkleVerifier is Ownable {
     }
 
     // ❌ Function to simulate unauthorized access (Example)
-    function unauthorizedFunc() pure external  {
+    function unauthorizedFunc() external pure {
         revert Unauthorized();
     }
 }

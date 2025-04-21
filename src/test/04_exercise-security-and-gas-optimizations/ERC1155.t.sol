@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import { ERC1155 } from "@/04_exercise-security-and-gas-optimizations/erc1155/ERC1155.sol";
+import {ERC1155} from "@/04_exercise-security-and-gas-optimizations/erc1155/ERC1155.sol";
 
 contract ERC1155Test is Test {
     ERC1155 erc1155;

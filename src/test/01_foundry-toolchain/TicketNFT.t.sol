@@ -2,10 +2,10 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import { TicketNFT } from "@/01_foundry-toolchain/ticketNFT/TicketNFT.sol";
-import { Ownable2Step } from "@openzeppelin/contracts/access/Ownable2Step.sol";
-import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import { ERC721Enumerable } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import {TicketNFT} from "@/01_foundry-toolchain/ticketNFT/TicketNFT.sol";
+import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract TicketNFTTest is Test {
     TicketNFT ticketNFT;

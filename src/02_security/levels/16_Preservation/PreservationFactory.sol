@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import { Level } from "@/02_security/core/Level.sol";
-import { Preservation, LibraryContract } from "./Preservation.sol";
+import {Level} from "@/02_security/core/Level.sol";
+import {Preservation, LibraryContract} from "./Preservation.sol";
 
 contract PreservationFactory is Level(msg.sender) {
     function createInstance(address) public payable override returns (address instanceAddr) {

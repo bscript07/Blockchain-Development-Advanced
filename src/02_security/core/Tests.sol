@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import { Test } from "forge-std/Test.sol";
-import { Ethernaut } from "./Ethernaut.sol";
-import { Level } from "./Level.sol";
+import {Test} from "forge-std/Test.sol";
+import {Ethernaut} from "./Ethernaut.sol";
+import {Level} from "./Level.sol";
 
 abstract contract Tests is Test {
     Ethernaut private ethernaut;
@@ -15,9 +15,9 @@ abstract contract Tests is Test {
 
     /* ========================================== TEMPLATE OF EXECUTION ========================================== */
 
-    function setupLevel() internal virtual { }
+    function setupLevel() internal virtual {}
 
-    function attack() internal virtual { }
+    function attack() internal virtual {}
 
     /* ========================== "HARDCODED" EXECUTION ========================= */
 
@@ -33,7 +33,7 @@ abstract contract Tests is Test {
 
     function createLevelInstance() external payable returns (address) {
         vm.prank(PLAYER);
-        return ethernaut.createLevelInstance{ value: msg.value }(levelFactory);
+        return ethernaut.createLevelInstance{value: msg.value}(levelFactory);
     }
 
     function checkSuccess() private {

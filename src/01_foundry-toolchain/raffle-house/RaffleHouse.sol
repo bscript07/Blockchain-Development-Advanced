@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { TicketNFT } from "../ticketNFT/TicketNFT.sol";
-import { ReentrancyGuardTransient } from "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
+import {TicketNFT} from "../ticketNFT/TicketNFT.sol";
+import {ReentrancyGuardTransient} from "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
 
 error TicketPriceTooLow();
 error RaffleAlreadyStarted();

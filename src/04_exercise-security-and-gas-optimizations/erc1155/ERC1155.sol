@@ -3,15 +3,15 @@
 
 pragma solidity 0.8.26;
 
-import { IERC1155 } from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
-import { IERC1155MetadataURI } from "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
-import { Context } from "@openzeppelin/contracts/utils/Context.sol";
-import { IERC165, ERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
-import { Arrays } from "@openzeppelin/contracts/utils/Arrays.sol";
-import { IERC1155Receiver } from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
-import { IERC1155Errors } from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
-import { IERC1155Receiver } from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
+import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import {IERC1155MetadataURI} from "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
+import {IERC165, ERC165} from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import {Arrays} from "@openzeppelin/contracts/utils/Arrays.sol";
+import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+import {IERC1155Errors} from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
+import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 /**
  * @dev Library that provide common ERC-1155 utility functions.
@@ -29,9 +29,14 @@ library ERC1155Utils {
      * Otherwise, the recipient must implement {IERC1155Receiver-onERC1155Received} and return the acceptance magic value to accept
      * the transfer.
      */
-    function checkOnERC1155Received(address operator, address from, address to, uint256 id, uint256 value, bytes memory data)
-        internal
-    {
+    function checkOnERC1155Received(
+        address operator,
+        address from,
+        address to,
+        uint256 id,
+        uint256 value,
+        bytes memory data
+    ) internal {
         // Security: Check if recipient is a contract before attempting callback
         if (to.code.length > 0) {
             try IERC1155Receiver(to).onERC1155Received(operator, from, id, value, data) returns (bytes4 response) {
@@ -73,7 +78,8 @@ library ERC1155Utils {
     ) internal {
         // Security: Check if recipient is a contract before attempting callback
         if (to.code.length > 0) {
-            try IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, values, data) returns (bytes4 response) {
+            try IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, values, data) returns (bytes4 response)
+            {
                 // Security: Verify the correct magic value is returned
                 if (response != IERC1155Receiver.onERC1155BatchReceived.selector) {
                     // Tokens rejected
@@ -157,7 +163,12 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI, IER
      *
      * - `accounts` and `ids` must have the same length.
      */
-    function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view virtual returns (uint256[] memory) {
+    function balanceOfBatch(address[] memory accounts, uint256[] memory ids)
+        public
+        view
+        virtual
+        returns (uint256[] memory)
+    {
         // Security: Validate array lengths to prevent out-of-bounds access
         if (accounts.length != ids.length) {
             revert ERC1155InvalidArrayLength(ids.length, accounts.length);
@@ -216,10 +227,13 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI, IER
     /**
      * @dev See {IERC1155-safeBatchTransferFrom}.
      */
-    function safeBatchTransferFrom(address from, address to, uint256[] memory ids, uint256[] memory values, bytes memory data)
-        public
-        virtual
-    {
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes memory data
+    ) public virtual {
         // Security: Check operator approval
         address sender = _msgSender();
         if (from != sender && !isApprovedForAll(from, sender)) {
@@ -350,9 +364,13 @@ abstract contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI, IER
      * acceptance magic value.
      * - `ids` and `values` must have the same length.
      */
-    function _safeBatchTransferFrom(address from, address to, uint256[] memory ids, uint256[] memory values, bytes memory data)
-        internal
-    {
+    function _safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes memory data
+    ) internal {
         // Security: Validate addresses
         if (to == address(0)) {
             revert ERC1155InvalidReceiver(address(0));

@@ -3,9 +3,9 @@ pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
 
-import { StakingContract } from "@/03_gas-optimizations/staking-contract/StakingContract.sol";
-import { OptimizedStakingContract } from "@/03_gas-optimizations/staking-contract/OptimizedStakingContract.sol";
-import { OptimizedERC20 } from "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
+import {StakingContract} from "@/03_gas-optimizations/staking-contract/StakingContract.sol";
+import {OptimizedStakingContract} from "@/03_gas-optimizations/staking-contract/OptimizedStakingContract.sol";
+import {OptimizedERC20} from "@/03_gas-optimizations/standart-erc20/OptimizedERC20.sol";
 
 contract StakingContractGasCompareTest is Test {
     uint256 constant REWARD_RATE = 100; // 100%
@@ -69,7 +69,9 @@ contract StakingContractGasCompareTest is Test {
         if (originalContractGasUsed > optimizedContractGasUsed) {
             console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
+                "Percentage saved:",
+                ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed,
+                "%"
             );
         } else {
             console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
@@ -115,7 +117,9 @@ contract StakingContractGasCompareTest is Test {
         if (originalContractGasUsed > optimizedContractGasUsed) {
             console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
+                "Percentage saved:",
+                ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed,
+                "%"
             );
         } else {
             console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
@@ -161,7 +165,9 @@ contract StakingContractGasCompareTest is Test {
         if (originalContractGasUsed > optimizedContractGasUsed) {
             console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
+                "Percentage saved:",
+                ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed,
+                "%"
             );
         } else {
             console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);
@@ -207,7 +213,9 @@ contract StakingContractGasCompareTest is Test {
         if (originalContractGasUsed > optimizedContractGasUsed) {
             console.log("Gas saved: ", originalContractGasUsed - optimizedContractGasUsed);
             console.log(
-                "Percentage saved:", ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed, "%"
+                "Percentage saved:",
+                ((originalContractGasUsed - optimizedContractGasUsed) * 100) / originalContractGasUsed,
+                "%"
             );
         } else {
             console.log("Gas increase: ", optimizedContractGasUsed - originalContractGasUsed);

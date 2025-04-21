@@ -2,8 +2,8 @@
 
 solc = '0.8.26'
 optimizer_runs = 200
-via_ir = true
 out = "build/out"
+via_ir = true
 cache_path = "build/cache"
 fs_permissions = [{ access = "read", path = "./"}]
 

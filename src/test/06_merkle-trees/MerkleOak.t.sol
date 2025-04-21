@@ -5,7 +5,6 @@ import "forge-std/Test.sol";
 import {MerkleVerifier} from "@/06_merkle-trees/merkle-tree-lab-remix/MerkleOak.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-
 contract MerkleVerifierTest is Test {
     MerkleVerifier public verifier;
     address public owner;
@@ -53,7 +52,7 @@ contract MerkleVerifierTest is Test {
         invalidProof.push(0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd);
     }
 
-    // Root setting and updating 
+    // Root setting and updating
     function testRootSetting() public view {
         assertEq(verifier.merkleRoot(), merkleRoot);
     }
@@ -67,48 +66,32 @@ contract MerkleVerifierTest is Test {
     function testUpdateRootAsNonOwner() public {
         bytes32 newRoot = keccak256(abi.encodePacked("newRoot"));
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                Ownable.OwnableUnauthorizedAccount.selector,
-                nonOwner
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, nonOwner));
         vm.prank(nonOwner);
         verifier.updateRoot(newRoot);
     }
 
     // Proof verification
     function testValidProof() public view {
-    address addr = participants[0];
+        address addr = participants[0];
 
-    // 🟢 Explicitly call the verifier with the correct proof array
-    bool isValid = verifier.verifyParticipant(addr, proof);
+        // 🟢 Explicitly call the verifier with the correct proof array
+        bool isValid = verifier.verifyParticipant(addr, proof);
 
-    // 🟢 Assert that proof is valid
-    assertTrue(isValid, "Expected valid Merkle proof to pass verification");
-}
-
+        // 🟢 Assert that proof is valid
+        assertTrue(isValid, "Expected valid Merkle proof to pass verification");
+    }
 
     function testInvalidProof() public {
         address fakeAddress = address(0x888);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                MerkleVerifier.InvalidMerkleProof.selector,
-                fakeAddress
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(MerkleVerifier.InvalidMerkleProof.selector, fakeAddress));
         verifier.verifyParticipant(fakeAddress, invalidProof);
     }
 
     // Access control
     function testAccessControl() public {
         bytes32 newRoot = keccak256(abi.encodePacked("Unauthorized"));
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                Ownable.OwnableUnauthorizedAccount.selector,
-                nonOwner
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, nonOwner));
         vm.prank(nonOwner);
         verifier.updateRoot(newRoot);
     }
@@ -116,13 +99,13 @@ contract MerkleVerifierTest is Test {
     // Gas optimization
     function testGasUsageForOptimization() public view {
         // 👨🏻‍💼 Get first participant
-          address addr = participants[0];
+        address addr = participants[0];
 
         // ⛽ Start gas value
-          uint256 startGas = gasleft();
+        uint256 startGas = gasleft();
 
-          // 🟢 Explicitly call the verifier with the correct proof array
-          verifier.verifyParticipant(addr, proof);
+        // 🟢 Explicitly call the verifier with the correct proof array
+        verifier.verifyParticipant(addr, proof);
 
         uint256 gasUsed = startGas - gasleft();
         console.log("Gas used for proof verification:", gasUsed);
@@ -130,16 +113,10 @@ contract MerkleVerifierTest is Test {
         assertTrue(gasUsed < 50000, "Gas usage for valid proof is too high");
     }
 
-    // Invalid proof rejection 
+    // Invalid proof rejection
     function testInvalidProofRejection() public {
         address fakeAddress = address(0x12345);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                MerkleVerifier.InvalidMerkleProof.selector,
-                fakeAddress
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(MerkleVerifier.InvalidMerkleProof.selector, fakeAddress));
         verifier.verifyParticipant(fakeAddress, invalidProof);
     }
-
 }

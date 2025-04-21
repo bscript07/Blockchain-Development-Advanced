@@ -2,8 +2,8 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import { FunctionGuzzler } from "@/03_gas-optimizations/function-guzzler/FunctionGuzzler.sol";
-import { OptimizedFunctionGuzzler } from "@/03_gas-optimizations/function-guzzler/OptimizedFunctionGuzzler.sol";
+import {FunctionGuzzler} from "@/03_gas-optimizations/function-guzzler/FunctionGuzzler.sol";
+import {OptimizedFunctionGuzzler} from "@/03_gas-optimizations/function-guzzler/OptimizedFunctionGuzzler.sol";
 
 contract FunctionGuzzlerGasCompareTest is Test {
     // Contracts instances in state variables

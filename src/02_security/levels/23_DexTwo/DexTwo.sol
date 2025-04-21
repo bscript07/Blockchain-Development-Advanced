@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { ERC20, IERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DexTwo is Ownable {
     address public token1;
     address public token2;
 
-    constructor() Ownable(msg.sender) { }
+    constructor() Ownable(msg.sender) {}
 
     function setTokens(address _token1, address _token2) public onlyOwner {
         token1 = _token1;
@@ -44,7 +44,9 @@ contract DexTwo is Ownable {
 contract SwappableTokenTwo is ERC20 {
     address private _dex;
 
-    constructor(address dexInstance, string memory name, string memory symbol, uint256 initialSupply) ERC20(name, symbol) {
+    constructor(address dexInstance, string memory name, string memory symbol, uint256 initialSupply)
+        ERC20(name, symbol)
+    {
         _mint(msg.sender, initialSupply);
         _dex = dexInstance;
     }

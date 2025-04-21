@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import { Tests } from "@/02_security/core/Tests.sol";
-import { DexTwoFactory, DexTwo, SwappableTokenTwo, IERC20 } from "@/02_security/levels/23_DexTwo/DexTwoFactory.sol";
+import {Tests} from "@/02_security/core/Tests.sol";
+import {DexTwoFactory, DexTwo, SwappableTokenTwo, IERC20} from "@/02_security/levels/23_DexTwo/DexTwoFactory.sol";
 
 contract TestDexTwo is Tests {
     DexTwo private level;

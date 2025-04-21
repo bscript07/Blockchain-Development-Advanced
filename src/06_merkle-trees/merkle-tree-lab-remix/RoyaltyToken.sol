@@ -6,8 +6,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC2981} from "@openzeppelin/contracts/token/common/ERC2981.sol";
 import {IERC2981} from "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
-contract Marketplace  {
-
+contract Marketplace {
     address owner;
     address token;
     uint256 tokenId;
@@ -28,19 +27,17 @@ contract Marketplace  {
 
         // -------------Royalty-------------//
         uint256 endPrice = price;
-        if(ERC721(token).supportsInterface(type(IERC2981).interfaceId)) {
-            (address receiver, uint256 amount) = IERC2981(token).royaltyInfo(
-                tokenId, price
-            );
-            (bool resRoyalties, ) = payable(receiver).call{value: amount}("");
-            if(resRoyalties) {
+        if (ERC721(token).supportsInterface(type(IERC2981).interfaceId)) {
+            (address receiver, uint256 amount) = IERC2981(token).royaltyInfo(tokenId, price);
+            (bool resRoyalties,) = payable(receiver).call{value: amount}("");
+            if (resRoyalties) {
                 endPrice -= amount;
             }
 
             // handle proper
         }
 
-        (bool res, ) = payable(owner).call{value: endPrice}("");
+        (bool res,) = payable(owner).call{value: endPrice}("");
         require(res, "No success");
     }
 }

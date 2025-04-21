@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.26;
 
-import { Elevator } from "./Elevator.sol";
+import {Elevator} from "./Elevator.sol";
 
 contract MaliciousElevator {
     uint256 counter;

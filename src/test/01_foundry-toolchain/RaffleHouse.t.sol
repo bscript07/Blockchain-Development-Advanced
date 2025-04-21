@@ -2,8 +2,8 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Test.sol";
-import { RaffleHouse } from "@/01_foundry-toolchain/raffle-house/RaffleHouse.sol";
-import { TicketNFT } from "@/01_foundry-toolchain/ticketNFT/TicketNFT.sol";
+import {RaffleHouse} from "@/01_foundry-toolchain/raffle-house/RaffleHouse.sol";
+import {TicketNFT} from "@/01_foundry-toolchain/ticketNFT/TicketNFT.sol";
 
 import {
     TicketPriceTooLow,
@@ -124,7 +124,7 @@ contract RaffleHouseTest is Test {
         uint256 invalidRaffleId = 1; // Non-existing raffleId
 
         vm.expectRevert(RaffleDoesNotExist.selector);
-        raffleHouse.buyTicket{ value: 1 ether }(invalidRaffleId);
+        raffleHouse.buyTicket{value: 1 ether}(invalidRaffleId);
     }
 
     function testBuyTicketRaffleNotStarted() public {
@@ -140,7 +140,7 @@ contract RaffleHouseTest is Test {
 
         // Try buying a ticket before the raffle starts
         vm.expectRevert(RaffleNotStarted.selector);
-        raffleHouse.buyTicket{ value: ticketPrice }(0);
+        raffleHouse.buyTicket{value: ticketPrice}(0);
     }
 
     function testBuyTicketAfterRaffleEnds() public {
@@ -177,7 +177,7 @@ contract RaffleHouseTest is Test {
         vm.warp(raffleStart + 1 minutes);
 
         vm.expectRevert(InvalidTicketPrice.selector); // Expect revert due to insufficient amount
-        raffleHouse.buyTicket{ value: insufficientAmount }(0); // Trying to buy with insufficient amount
+        raffleHouse.buyTicket{value: insufficientAmount}(0); // Trying to buy with insufficient amount
     }
 
     // ---------------------------------GET RAFFLE-------------------------------------------//
