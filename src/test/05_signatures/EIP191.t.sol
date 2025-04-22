@@ -5,10 +5,8 @@ import "forge-std/Test.sol";
 import {EIP191} from "@/05_signatures/EIP191.sol";
 
 contract EIP191Test is Test {
-
     // Deploy the eip191 contract
     EIP191 eip191;
-
 
     // Generate new address with this private key
     uint256 privateKey = 0xA11CE;
@@ -37,6 +35,6 @@ contract EIP191Test is Test {
         address recovered = eip191.verifySignature(message, v, r, s);
 
         // Check if signer address is matched
-         assertEq(recovered, signer, "Recovered address does not match signer");
+        assertEq(recovered, signer, "Recovered address does not match signer");
     }
 }

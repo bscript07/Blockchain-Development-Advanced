@@ -6,6 +6,13 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
+error ExceedsInitialSupply();
+error ExceedsMaxSupply();
+error InvalidSignature();
+error AuthorizationAlreadyUsed();
+error AuthorizationNotValid();
+error AuthorizationExpired();
+
 contract ERC2612 is ERC20, ERC20Permit, Ownable {
     uint256 public constant MAX_SUPPLY = 10_000_000 * 10 ** 18;
 
@@ -15,19 +22,7 @@ contract ERC2612 is ERC20, ERC20Permit, Ownable {
 
     mapping(bytes32 => bool) public authorizationUsed;
 
-    error ExceedsInitialSupply();
-    error ExceedsMaxSupply();
-    error InvalidSignature();
-    error AuthorizationAlreadyUsed();
-    error AuthorizationNotValid();
-    error AuthorizationExpired();
-
-    constructor(uint256 _initialSupply)
-        ERC20("ERC20 Token", "ERCT")
-        ERC20Permit("ERC20 Token")
-        Ownable(msg.sender)
-
-    {
+    constructor(uint256 _initialSupply) ERC20("ERC20 Token", "ERCT") ERC20Permit("ERC20 Token") Ownable(msg.sender) {
         if (_initialSupply > MAX_SUPPLY) {
             revert ExceedsInitialSupply();
         }
@@ -72,15 +67,8 @@ contract ERC2612 is ERC20, ERC20Permit, Ownable {
         if (block.timestamp > validBefore) revert AuthorizationExpired();
         if (authorizationUsed[nonce]) revert AuthorizationAlreadyUsed();
 
-        bytes32 structHash = keccak256(abi.encode(
-            TRANSFER_WITH_AUTHORIZATION_TYPEHASH,
-            from,
-            to,
-            value,
-            validAfter,
-            validBefore,
-            nonce
-        ));
+        bytes32 structHash =
+            keccak256(abi.encode(TRANSFER_WITH_AUTHORIZATION_TYPEHASH, from, to, value, validAfter, validBefore, nonce));
 
         bytes32 hash = _hashTypedDataV4(structHash);
         address signer = ECDSA.recover(hash, v, r, s);
@@ -90,28 +78,18 @@ contract ERC2612 is ERC20, ERC20Permit, Ownable {
         _transfer(from, to, value);
     }
 
-        // 👇 Helper function for domain separator from EIP712
+    // 👇 Helper function for domain separator from EIP712
     function getAuthorizationTypedDataHash(
-       address from,
-       address to,
-       uint256 value,
-       uint256 validAfter,
-       uint256 validBefore,
-       bytes32 nonce
-       ) public view returns (bytes32) {
-     bytes32 structHash = keccak256(abi.encode(
-        TRANSFER_WITH_AUTHORIZATION_TYPEHASH,
-        from,
-        to,
-        value,
-        validAfter,
-        validBefore,
-        nonce
-    ));
+        address from,
+        address to,
+        uint256 value,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce
+    ) public view returns (bytes32) {
+        bytes32 structHash =
+            keccak256(abi.encode(TRANSFER_WITH_AUTHORIZATION_TYPEHASH, from, to, value, validAfter, validBefore, nonce));
 
-    return _hashTypedDataV4(structHash);
+        return _hashTypedDataV4(structHash);
+    }
 }
-
-
-}
-

@@ -10,7 +10,7 @@ contract EIP191 {
 
         // Recover the signer
         address signer = ecrecover(messageHash, v, r, s);
-        
+
         // Check for zero address signer
         require(signer != address(0), "Invalid signature");
 

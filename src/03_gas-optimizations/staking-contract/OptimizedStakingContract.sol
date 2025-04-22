@@ -5,7 +5,9 @@ import {IOptimizedStakingContract} from "./IOptimizedStakingContract.sol";
 import {IERC20} from "./IERC20.sol";
 
 event Staked(address indexed user, uint256 amount);
+
 event Withdrawn(address indexed user, uint256 amount);
+
 event RewardClaim(address indexed user, uint256 reward);
 
 error ZeroAmount();

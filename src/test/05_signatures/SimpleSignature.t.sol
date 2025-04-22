@@ -34,7 +34,7 @@ contract SimpleSignatureTest is Test {
         bytes memory data = abi.encode("secret value");
         bytes32 hash = keccak256(data);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKeySigner, hash);
-        
+
         // Test with wrong passed data
         bytes memory dataTwo = abi.encode("secret value 2");
         address recovered = simpleSignatureContract.verifySignature(dataTwo, v, r, s);
@@ -56,17 +56,17 @@ contract SimpleSignatureTest is Test {
     }
 
     function testMismatchedHashFormat() public view {
-    bytes memory data = abi.encode("secret value");
+        bytes memory data = abi.encode("secret value");
 
-    // Add prefix for Ethereum signature
-    bytes32 ethSignedMessageHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uint256(data.length), data));
+        // Add prefix for Ethereum signature
+        bytes32 ethSignedMessageHash =
+            keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uint256(data.length), data));
 
-    (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKeySigner, ethSignedMessageHash);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKeySigner, ethSignedMessageHash);
 
-    address recovered = simpleSignatureContract.verifySignature(data, v, r, s);
+        address recovered = simpleSignatureContract.verifySignature(data, v, r, s);
 
-    // Might or might not work depending on the format; assert accordingly
-    assertNotEq(recovered, signer, "Mismatched hash formats shouldn't verify");
-}
-
+        // Might or might not work depending on the format; assert accordingly
+        assertNotEq(recovered, signer, "Mismatched hash formats shouldn't verify");
+    }
 }
