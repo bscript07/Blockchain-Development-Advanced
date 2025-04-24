@@ -133,7 +133,7 @@ contract AIAgentShare is ERC20, Ownable, EIP712, ERC20Permit {
         uint256 bitIndex = index % BITS_PER_UINT;
         // Create a mask with a 1 at the bit position we want to check
         uint256 mask = 1 << bitIndex;
-        // Check if the bit is set by ANDing the mask
+        // Check if the bit is set by adding the mask
         return (claimedBitmap[bitmapIndex] & mask) != 0;
     }
 
