@@ -24,16 +24,16 @@ contract AIAgentShare is ERC20, Ownable, EIP712, ERC20Permit {
     // Maximum share amount per participant 50000 tokens
     uint256 public constant MAX_AMOUNT_PLUS_ONE = 50001 * 10 ** 18;
 
-    // Total user participants 
+    // Total user participants
     uint256 public constant TOTAL_PARTICIPANTS = 260;
 
-    // 256 bits per 1 uint256 state variable 
+    // 256 bits per 1 uint256 state variable
     uint256 public constant BITS_PER_UINT = 256;
 
-    // Relayer fee 5% commission 
+    // Relayer fee 5% commission
     uint256 public constant RELAYER_FEE = 5 * 10 ** 18;
 
-    // Set type hash for buy approval 
+    // Set type hash for buy approval
     bytes32 public constant STRUCT_TYPE_HASH = keccak256("BuyApproval(uint256 amount, int256 deadline)");
 
     // Set 10 days buys period
@@ -46,9 +46,9 @@ contract AIAgentShare is ERC20, Ownable, EIP712, ERC20Permit {
     address public relayer;
 
     // Add 5 million tokens to the pool for my buyers participants
-    uint256 public shareHoldersPool = 5_000_000 * 10 ** 18; 
+    uint256 public shareHoldersPool = 5_000_000 * 10 ** 18;
 
-    // Set price per 1 token == 0.10 ether 
+    // Set price per 1 token == 0.10 ether
     uint256 public price = 0.1 ether;
 
     /**
