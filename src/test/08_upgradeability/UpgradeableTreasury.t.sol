@@ -21,7 +21,7 @@ contract UpgradeableTreasuryTest is Test {
     function setUp() public {
         // Set up the token 🪙
         shibon = new Shibon();
-        shibon.mint(owner, 1000 * 10 ** 18); // Mint tokens for the owner
+        shibon.mint(owner, 1000 * 10 ** 18); // Mint 1000 shib tokens for the owner
 
         // Deploy ProxyAdmin 🛠️
         proxyAdmin = new ProxyAdmin(owner);

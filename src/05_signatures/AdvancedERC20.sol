@@ -14,6 +14,7 @@ error AuthorizationNotValid();
 error AuthorizationExpired();
 
 contract ERC2612 is ERC20, ERC20Permit, Ownable {
+    // 10 millions max supply on token
     uint256 public constant MAX_SUPPLY = 10_000_000 * 10 ** 18;
 
     bytes32 public constant TRANSFER_WITH_AUTHORIZATION_TYPEHASH = keccak256(
@@ -89,6 +90,25 @@ contract ERC2612 is ERC20, ERC20Permit, Ownable {
     ) public view returns (bytes32) {
         bytes32 structHash =
             keccak256(abi.encode(TRANSFER_WITH_AUTHORIZATION_TYPEHASH, from, to, value, validAfter, validBefore, nonce));
+
+        return _hashTypedDataV4(structHash);
+    }
+
+    function getPermitTypedDataHash(address owner, address spender, uint256 value, uint256 nonce, uint256 deadline)
+        public
+        view
+        returns (bytes32)
+    {
+        bytes32 structHash = keccak256(
+            abi.encode(
+                keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"),
+                owner,
+                spender,
+                value,
+                nonce,
+                deadline
+            )
+        );
 
         return _hashTypedDataV4(structHash);
     }

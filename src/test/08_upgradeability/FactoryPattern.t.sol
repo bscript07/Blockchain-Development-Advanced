@@ -43,7 +43,8 @@ contract FactoryPatternTest is Test {
         address nftCollection = collections[0];
 
         // Mint an NFT
-        vm.prank(ani); // Ani is calling mint
+        vm.prank(ani);
+        // Ani is calling safe mint
         BaseNFT(nftCollection).safeMint(ani);
 
         // Check that the minted NFT exists

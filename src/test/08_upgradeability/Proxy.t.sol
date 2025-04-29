@@ -9,7 +9,7 @@ contract ProxyTest is Test {
     Proxy proxy;
     Implementation implementation;
 
-    address user = address(0xabcd);
+    address public user = address(0xabcd);
 
     function setUp() public {
         proxy = new Proxy();
@@ -17,6 +17,7 @@ contract ProxyTest is Test {
     }
 
     function testDelegateCallWorks() public {
+        // Set amount for test == 0.3 ether
         uint256 amountToSend = 0.3 ether;
 
         // Give 1 ether to user
