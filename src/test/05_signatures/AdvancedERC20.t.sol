@@ -25,9 +25,8 @@ contract ERC2612Test is Test {
     uint256 initialSupply = 10_000_000 * 10 ** 18;
 
     function setUp() public {
-        ownerPrivateKey = vm.envUint("PRIVATE_KEY");
+        ownerPrivateKey = uint256(keccak256("owner"));
         owner = vm.addr(ownerPrivateKey);
-
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
 
