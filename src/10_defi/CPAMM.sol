@@ -4,12 +4,18 @@ pragma solidity 0.8.26;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+error InsufficientLiquidity();
+error InsufficientLiquidityMinted();
+error InsufficientLiquidityBurned();
+error InvalidToken();
+error InsufficientAmount();
+
 contract CPAMM is ERC20 {
     IERC20 public immutable tokenA;
     IERC20 public immutable tokenB;
 
-    uint256 public reserveA;
-    uint256 public reserveB;
+    uint256 public reserveA; // 256 bits == 1 slot in storage
+    uint256 public reserveB; // 256 bits == 1 slot in storage
 
     constructor(address _tokenA, address _tokenB) ERC20("LPToken", "LPT") {
         tokenA = IERC20(_tokenA);
@@ -19,7 +25,7 @@ contract CPAMM is ERC20 {
     function addLiquidity(uint256 amountA, uint256 amountB) external returns (uint256 shares) {
         if (reserveA > 0 || reserveB > 0) {
             if (reserveA * amountB != reserveB * amountA) {
-                revert("Insufficient liquidity");
+                revert InsufficientLiquidity();
             }
         }
 
@@ -32,7 +38,7 @@ contract CPAMM is ERC20 {
             shares = _min((amountA * totalSupply()) / reserveA, (amountB * totalSupply()) / reserveB);
         }
 
-        if (shares == 0) revert("Insufficient liquidity minted");
+        if (shares == 0) revert InsufficientLiquidityMinted();
 
         _mint(msg.sender, shares);
         _update(tokenA.balanceOf(address(this)), tokenB.balanceOf(address(this)));
@@ -46,7 +52,7 @@ contract CPAMM is ERC20 {
         amountB = (_shares * balanceB) / totalSupply();
 
         if (amountA == 0 || amountB == 0) {
-            revert("Insufficient liquidity burned");
+            revert InsufficientLiquidityBurned();
         }
 
         _burn(msg.sender, _shares);
@@ -58,11 +64,11 @@ contract CPAMM is ERC20 {
 
     function swap(address token, uint256 amountIn) external {
         if (token != address(tokenA) && token != address(tokenB)) {
-            revert("Invalid Token");
+            revert InvalidToken();
         }
 
         if (amountIn == 0) {
-            revert("Insufficient amount");
+            revert InsufficientAmount();
         }
 
         bool isTokenA = token == address(tokenA);
